@@ -8,7 +8,7 @@
 
 # Adresse publique du site, sans "/" à la fin.
 # Avec GitHub Pages sans nom de domaine : https://NOM-DU-COMPTE.github.io/NOM-DU-DEPOT
-url: https://a-completer.github.io/cineswipe
+url: https://gabindupontt-tech.github.io/cineswipe
 
 # Fraîcheur des prix : au-delà de ce nombre de jours depuis le relevé, la fiche affiche "à revérifier" et la construction du site
 # l'indique. (H) 14 jours est une proposition de départ : à fixer par l'équipe selon la fréquence de relevé réelle.
