@@ -8,6 +8,12 @@
       {% else %}
       <span class="btn btn--primary" aria-disabled="true">Bientôt disponible</span>
       {% endif %}
+      {% if site.newsletter.instagram and not (site.newsletter.instagram | estAcompleter) %}
+      <a class="btn btn--ghost" href="{{ site.newsletter.instagram }}" target="_blank" rel="noopener noreferrer">Instagram<span class="sr-only"> (s'ouvre dans un nouvel onglet)</span></a>
+      {% endif %}
+      {% if site.newsletter.tiktok and not (site.newsletter.tiktok | estAcompleter) %}
+      <a class="btn btn--ghost" href="{{ site.newsletter.tiktok }}" target="_blank" rel="noopener noreferrer">TikTok<span class="sr-only"> (s'ouvre dans un nouvel onglet)</span></a>
+      {% endif %}
     </p>
     {% if site.newsletter.lien_simule %}<p class="caption">Démonstration : ce lien est un exemple, la page vers laquelle il mène est simulée.</p>{% endif %}
   </div>

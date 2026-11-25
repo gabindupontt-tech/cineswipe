@@ -72,6 +72,8 @@
           <li><a href="{{ '/a-propos/' | url }}">À propos et sources</a></li>
           <li><a href="{{ '/a-propos/#mentions-legales' | url }}">Mentions légales</a></li>
           <li><a href="{{ '/a-propos/#confidentialite' | url }}">Confidentialité</a></li>
+          {% if site.newsletter.instagram and not (site.newsletter.instagram | estAcompleter) %}<li><a href="{{ site.newsletter.instagram }}" target="_blank" rel="noopener noreferrer">Instagram<span class="sr-only"> (s'ouvre dans un nouvel onglet)</span></a></li>{% endif %}
+          {% if site.newsletter.tiktok and not (site.newsletter.tiktok | estAcompleter) %}<li><a href="{{ site.newsletter.tiktok }}" target="_blank" rel="noopener noreferrer">TikTok<span class="sr-only"> (s'ouvre dans un nouvel onglet)</span></a></li>{% endif %}
           {% if site.ga4_id or site.stats.endpoint %}<li><button class="link-btn" type="button" data-consent-open>Gérer mes cookies</button></li>{% endif %}
         </ul>
       </nav>
