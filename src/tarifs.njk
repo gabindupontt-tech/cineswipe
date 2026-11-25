@@ -1,0 +1,68 @@
+---
+layout: base.njk
+kind: tarifs
+permalink: /tarifs/
+title: "Tarifs cinéma étudiant : prix relevés et abonnements | CinéSwipe"
+description: "Combien coûte une place de cinéma quand on est étudiant ? Prix moyens, abonnements et relevés cinéma par cinéma, avec source et date pour chaque prix."
+---
+{% set abos = contenu.cartes | selectattr("type", "equalto", "abonnement") | list %}
+<section class="section tarifs" aria-labelledby="tarifs-titre">
+  <div class="wrap wrap--narrow">
+    <h1 id="tarifs-titre">Combien coûte une place de cinéma ?</h1>
+    <p class="section__intro">Chaque prix de cette page a une source, un lien et une date. Un prix relevé il y a plus de {{ contenu.seuilFraicheur }} jours est marqué « à revérifier ».</p>
+
+    {% if contenu.prixMoyens.length %}
+    <h2>Prix moyens payés en France</h2>
+    <div class="table-wrap">
+    <table class="table-prix">
+      <caption class="sr-only">Prix moyens d'une place de cinéma, d'après une enquête</caption>
+      <thead><tr><th scope="col">Type de place</th><th scope="col">Prix</th><th scope="col">Source</th></tr></thead>
+      <tbody>
+      {% for p in contenu.prixMoyens %}
+        <tr>
+          <th scope="row">{{ p.libelle }}{% if p.note %}<br><span class="caption">{{ p.note }}</span>{% endif %}</th>
+          <td class="price">{{ p.montantFr }}</td>
+          <td class="caption"><a href="{{ p.sourceUrl }}" target="_blank" rel="noopener noreferrer">{{ p.sourceNom }}<span class="sr-only"> (s'ouvre dans un nouvel onglet)</span></a>, consultée le {{ p.dateFr }} ({{ p.sources }} source)</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    </div>
+    <p class="caption">Ce sont des moyennes : le prix de ton cinéma peut être différent. Les relevés cinéma par cinéma sont plus bas.</p>
+    {% endif %}
+
+    {% if abos.length %}
+    <h2>Abonnements</h2>
+    <ul class="tarifs__abos">
+      {% for a in abos %}
+      <li><strong>{{ a.nom }}</strong> : <span class="price">{{ a.prixMensuelFr }}</span> par mois ({{ a.circuit }}). Relevé le {{ a.dateFr }}, <a href="{{ a.sourceUrl }}" target="_blank" rel="noopener noreferrer">{{ a.sourceNom }}<span class="sr-only"> (s'ouvre dans un nouvel onglet)</span></a>.</li>
+      {% endfor %}
+    </ul>
+    <p><a class="btn btn--secondary" href="{{ '/cartes/' | url }}">Calculer si une carte vaut le coup</a></p>
+    {% endif %}
+
+    <h2>Relevés de l'équipe, cinéma par cinéma</h2>
+    {% if contenu.releves.length %}
+    <div class="table-wrap">
+    <table class="table-prix">
+      <caption class="sr-only">Prix relevés par l'équipe dans chaque cinéma</caption>
+      <thead><tr><th scope="col">Cinéma</th><th scope="col">Tarif</th><th scope="col">Prix</th><th scope="col">Relevé</th></tr></thead>
+      <tbody>
+      {% for r in contenu.releves %}
+        <tr>
+          <th scope="row">{{ r.cinema }}{% if r.exemple %} <span class="chip chip--exemple">Exemple à remplacer</span>{% endif %}</th>
+          <td>{{ r.type }}</td>
+          <td class="price">{{ r.montantFr }}</td>
+          <td class="caption">{{ r.dateFr }} <span class="fraicheur{% if r.fraicheur.ancien %} fraicheur--alerte{% endif %}">({{ r.fraicheur.texte | lower }}{% if r.fraicheur.ancien %}, à revérifier{% endif %})</span>, <a href="{{ r.sourceUrl }}" target="_blank" rel="noopener noreferrer">{{ r.sourceNom }}<span class="sr-only"> (s'ouvre dans un nouvel onglet)</span></a></td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    </div>
+    <p class="caption">Un relevé par cinéma et par type de tarif, le plus récent. Ils viennent des fiches des films de la sélection : la liste s'allonge chaque semaine.</p>
+    {% else %}
+    <p>Les relevés cinéma par cinéma arrivent avec la première sélection.</p>
+    {% endif %}
+    <p class="caption">Les tarifs peuvent changer : vérifie le prix affiché sur le site du cinéma avant de payer.</p>
+  </div>
+</section>

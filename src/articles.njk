@@ -1,0 +1,24 @@
+---
+layout: base.njk
+kind: articles
+permalink: /articles/
+title: "Articles : tarifs, cartes et sélection du cinéma étudiant | CinéSwipe"
+description: "Les articles de CinéSwipe par rubrique : ce que coûte le cinéma pour un étudiant, comparaison avec le streaming, et la sélection de la semaine."
+---
+<section class="section">
+  <div class="wrap wrap--narrow">
+    <h1>Les articles</h1>
+    <p class="section__intro">Chaque chiffre a une source et une date. Quatre rubriques, une idée par article.</p>
+    {% for id, r in contenu.rubriques %}
+    {% set liste = contenu.articles | selectattr("rubrique", "equalto", id) | list %}
+    {% if liste.length %}
+    <h2 id="{{ id }}">{{ r.nom }}</h2>
+    <p class="caption">{{ r.intro }}</p>
+    <ul class="archives">
+      {% for a in liste %}<li><a class="week-link" href="{{ a.url | url }}"><span class="week-link__date">{{ a.titre }}</span><span class="caption">{{ a.auteur }} · {{ a.dateFr }} · {{ a.minutes }} min{% if a.enRelecture %} · en relecture{% endif %}</span></a></li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    {% endfor %}
+  </div>
+</section>

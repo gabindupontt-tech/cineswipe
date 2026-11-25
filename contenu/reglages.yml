@@ -1,0 +1,90 @@
+# ============================================================
+#  RÉGLAGES DU SITE CINÉSWIPE
+#  Un seul fichier pour tout ce qui n'est pas un film ni une semaine.
+#  Les lignes qui commencent par # sont des commentaires : elles ne changent rien.
+#  Les champs qui commencent par A_COMPLETER sont à remplir avant la mise en ligne
+#  (le site te le rappelle à chaque construction).
+# ============================================================
+
+# Adresse publique du site, sans "/" à la fin.
+# Avec GitHub Pages sans nom de domaine : https://NOM-DU-COMPTE.github.io/NOM-DU-DEPOT
+url: https://a-completer.github.io/cineswipe
+
+# Fraîcheur des prix : au-delà de ce nombre de jours depuis le relevé, la fiche affiche "à revérifier" et la construction du site
+# l'indique. (H) 14 jours est une proposition de départ : à fixer par l'équipe selon la fréquence de relevé réelle.
+fraicheur_jours: 14
+
+# ------------------------------------------------------------
+# Mesure d'audience (Google Analytics 4)
+# Colle ici l'identifiant de mesure (il ressemble à G-ABC123XYZ4).
+# Laisse vide tant que GA4 n'est pas créé : dans ce cas, rien n'est chargé et
+# la bannière de consentement n'apparaît pas.
+# ------------------------------------------------------------
+ga4_id: ""
+
+# Search Console : valeur de la balise de vérification (méthode "balise HTML"),
+# seulement la valeur du champ content="...". Laisse vide si tu vérifies par un autre moyen.
+search_console_verification: ""
+
+# ------------------------------------------------------------
+# Newsletter
+# Le site est statique : il ne stocke aucune adresse. Le formulaire envoie vers ta
+# plateforme d'emailing. Dans la plateforme, règle la page affichée APRÈS la confirmation
+# de l'inscription sur : <url du site>/newsletter/merci/
+# (c'est cette page qui déclenche la mesure "inscription confirmée").
+# ------------------------------------------------------------
+newsletter:
+  # Pas d'envoi d'e-mail : la newsletter passe par les réseaux sociaux (une édition = une publication
+  # Instagram et TikTok) et par un lien externe. Le site ne stocke aucune adresse.
+  # SIMULATION : tant que le vrai lien n'existe pas, le bouton pointe vers une adresse réservée aux exemples (example.com).
+  lien: "https://example.com/cineswipe-newsletter"
+  lien_simule: true
+  instagram: "A_COMPLETER : adresse du compte Instagram"
+  tiktok: "A_COMPLETER : adresse du compte TikTok"
+
+# ------------------------------------------------------------
+# Page À propos et mentions légales
+# ------------------------------------------------------------
+equipe:
+  presentation: "CinéSwipe est un projet étudiant : quatre étudiants de M1 Commerce International à Clermont School of Business le réalisent dans le cadre du cours Digital Marketing (Media Concept and Strategy). Le site est un média expérimental, pas une entreprise."
+  # Noms et rôles repris du one-pager du Milestone 2. Les quatre membres ont donné leur accord pour apparaître ici.
+  membres:
+    - "Gabin Dupont, gestion de projet et analytics"
+    - "Louis Pabian, rédacteur en chef et vérification du contenu"
+    - "Noé Merle, web, SEO et newsletter"
+    - "Aamirsohel Vohra, réseaux sociaux, design et vidéo"
+
+# Comment les films sont choisis. Écris ce que l'équipe fait réellement, pas ce qui sonne bien.
+methode_selection: "Un film entre dans la sélection quand l'équipe peut dire en une phrase pour qui il est, ce que la séance coûte et ce que la salle lui apporte. Le rédacteur en chef relit chaque verdict et vérifie le tarif et sa source avant publication. Aux 3 à 5 films de la sélection s'ajoutent, quand c'est utile, quelques films de cinémas indépendants et des reprises (un film ancien qui revient en salle) : ils sont signalés par une pastille et séparés de la sélection."
+
+editeur:
+  nom: "CinéSwipe, équipe étudiante de quatre personnes"
+  directeur_publication: "A_COMPLETER : prénom et nom"
+  contact_email: "A_COMPLETER : adresse e-mail de contact"
+
+hebergeur:
+  nom: "GitHub, Inc. (service GitHub Pages)"
+  adresse: "88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, États-Unis"  # à vérifier sur la documentation GitHub avant publication
+
+# Crédits supplémentaires pour les données de films, un par ligne (par exemple une base de données utilisée).
+# Laisse la liste vide si les informations viennent uniquement des sites des cinémas et des distributeurs.
+credits_supplementaires: []
+
+# ------------------------------------------------------------
+# Statistiques de la communauté et groupes en direct (facultatif)
+# Le site est statique : pour compter les films gardés par tous les visiteurs ("78 % l'ont gardé") et pour
+# synchroniser un groupe en direct, il faut un petit service de compteurs. Le mode d'emploi est dans backend/README.md.
+# Tant que "endpoint" est vide : aucune statistique n'est affichée, les groupes fonctionnent par liens, comme avant.
+# - endpoint : adresse du service (https://...), sans "/" à la fin.
+# - seuil : nombre minimal de personnes qui ont trié un film avant d'afficher son pourcentage.
+#   En dessous, rien ne s'affiche : un pourcentage sur 8 personnes n'a pas de valeur.
+# ------------------------------------------------------------
+#
+# MODE DÉMO (pour la présentation à l'école) : "demo: true" affiche toutes les fonctionnalités comme s'il y avait des utilisateurs,
+# avec des données FICTIVES clairement étiquetées ("Démo, données fictives") : pourcentages d'exemple sur les fiches et un groupe de
+# démonstration sur la page Groupe. Rien n'est envoyé ni compté. Ne fonctionne que si "endpoint" est vide : dès que le vrai service
+# est branché, la démo s'éteint toute seule pour ne jamais mélanger vrai et fictif. Remets false avant de citer des chiffres.
+stats:
+  endpoint: ""
+  seuil: 30
+  demo: true

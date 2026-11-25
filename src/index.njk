@@ -1,0 +1,73 @@
+---
+layout: base.njk
+permalink: /
+title: "CinéSwipe : les films qui valent le prix"
+description: "Chaque semaine, 3 à 5 films avec un verdict en trois lignes (pour qui, prix, pourquoi en salle), le tarif relevé et le lien pour réserver sur le site du cinéma."
+kind: home
+---
+{% import "components.njk" as c %}
+{% set sem = contenu.courante %}
+
+<section class="hero">
+  <div class="wrap hero__grid">
+    <div class="hero__texte">
+      {% if sem %}<p class="chips"><span class="chip">{{ sem.label }}</span></p>{% endif %}
+      <h1>{% if sem %}{{ sem.films.length }} films qui valent leur prix cette semaine{% else %}Les films qui valent leur prix{% endif %}</h1>
+      <p class="hero__intro">Pour chaque film, trois lignes : pour qui, le prix, pourquoi en salle. Le tarif est relevé et daté, la réservation se fait sur le site du cinéma.</p>
+      <p class="hero__actions">
+        {% if sem %}<a class="btn btn--primary btn--large" href="#selection">Voir la sélection</a>
+        <a class="btn btn--secondary btn--large" href="{{ '/swipe/' | url }}">Trier en swipant</a>
+        {% else %}<a class="btn btn--primary btn--large" href="#newsletter">Être prévenu de la première sélection</a>{% endif %}
+      </p>
+      <p class="note-manuscrite" aria-hidden="true">pas de compte à créer</p>
+    </div>
+    <div class="hero__deco" aria-hidden="true">
+      <span class="bulle bulle--grande"></span>
+      <span class="bulle bulle--moyenne"></span>
+      <span class="bulle bulle--petite"></span>
+    </div>
+  </div>
+  {{ c.wave("sunk", 1) }}
+</section>
+
+{% if sem %}
+<section class="section section--sunk" id="selection" aria-labelledby="selection-titre">
+  <div class="wrap">
+    <h2 id="selection-titre">La sélection du {{ sem.dateFr }}</h2>
+    <p class="section__intro">{{ sem.labelLong }}.</p>
+    {% if sem.edito %}<div class="prose prose--edito">{{ sem.edito | safe }}</div>{% endif %}
+    <div class="cards">
+      {% for film in sem.films %}{{ c.verdictCard(film, loop.index0 % 3 + 1) }}{% endfor %}
+    </div>
+    <p class="section__cta">
+      <a class="btn btn--primary" href="{{ '/swipe/' | url }}">Trier ces films en swipant</a>
+      <a class="btn btn--ghost" href="{{ '/archives/' | url }}">Semaines précédentes</a>
+    </p>
+  </div>
+</section>
+{{ c.wave("base", 2) }}
+
+<section class="section" aria-labelledby="lire-titre">
+  <div class="wrap wrap--narrow">
+    <h2 id="lire-titre">Comment lire un verdict</h2>
+    <ul class="lire">
+      <li><span class="label">Pour qui</span> Le public qui y trouvera son compte, pour choisir avec qui y aller.</li>
+      <li><span class="label">Prix</span> Ce que ça coûte vraiment, avec le tarif relevé sur le site du cinéma, sa source et sa date.</li>
+      <li><span class="label">Pourquoi en salle</span> Ce que la salle apporte que ton écran ne donne pas.</li>
+    </ul>
+    <p>Le bouton de réservation te renvoie vers la page du cinéma lui-même, dans un nouvel onglet.</p>
+  </div>
+</section>
+{{ c.wave("sunk", 1) }}
+{% else %}
+{% set nlFond = "base" %}
+<section class="section section--sunk">
+  <div class="wrap wrap--narrow">
+    <h2>La première sélection arrive bientôt</h2>
+    <p>Laisse ton adresse e-mail plus bas, tu seras prévenu.</p>
+  </div>
+</section>
+{{ c.wave("base", 2) }}
+{% endif %}
+
+{% include "newsletter.njk" %}

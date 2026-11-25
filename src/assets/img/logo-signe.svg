@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- LOGO PROVISOIRE. Remplace ce fichier par le SVG officiel du signe CinéSwipe, en gardant le même nom (logo-signe.svg). -->
+  <path fill="#ff4d6d" d="M32 4c13 0 26 8 26 24 0 17-9 32-27 32C15 60 5 47 5 33 5 16 18 4 32 4z"/>
+  <path fill="#24133a" stroke="#24133a" stroke-width="5" stroke-linejoin="round" d="M26 23 L41 33 L26 43 Z"/>
+  <circle cx="52" cy="12" r="8" fill="#ffc93c"/>
+</svg>

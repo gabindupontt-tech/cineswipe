@@ -1,0 +1,80 @@
+---
+layout: base.njk
+kind: swipe
+permalink: /swipe/
+pageScripts:
+  - /assets/js/geo.js
+  - /assets/js/stats.js
+  - /assets/js/swipe.js
+title: "Swipe : trie les films de la semaine | CinéSwipe"
+description: "Garde ou écarte chaque film de la semaine, puis envoie ta liste dans le groupe. Pas de compte : ta liste reste dans ton navigateur."
+---
+{% import "components.njk" as c %}
+{% set sem = contenu.courante %}
+<section class="section swipe" aria-labelledby="swipe-titre">
+  <div class="wrap wrap--narrow">
+    <h1 id="swipe-titre">Trie la semaine en swipant</h1>
+    {% if not sem %}
+      <p>Il n'y a pas encore de sélection à trier. Reviens dès la première publication.</p>
+    {% else %}
+    <p class="section__intro" id="swipe-intro">{{ sem.label }}. Glisse vers la droite pour garder, vers la gauche pour écarter. Tu peux aussi utiliser les boutons.{% if sem.enPlus.length %} Après la sélection, quelques films de cinémas indépendants et des reprises sont ajoutés.{% endif %}</p>
+
+    <div class="swipe-app" id="swipe-app" data-semaine="{{ sem.id }}" data-label="{{ sem.label }}">
+      <div class="swipe-filtre" id="swipe-filtre" role="group" aria-label="Quels films trier ?" hidden>
+        <button class="toggle" type="button" data-cat="nouveau" aria-pressed="true" hidden>À l'affiche <span class="toggle__n"></span></button>
+        <button class="toggle" type="button" data-cat="independant" aria-pressed="true" hidden>Indépendants <span class="toggle__n"></span></button>
+        <button class="toggle" type="button" data-cat="reprise" aria-pressed="true" hidden>Reprises <span class="toggle__n"></span></button>
+      </div>
+
+      <div class="swipe-top" id="swipe-top" hidden>
+        <p class="chip" id="swipe-progress" aria-live="polite"></p>
+        <button class="btn btn--ghost btn--small" type="button" id="swipe-undo" disabled>Annuler le dernier choix</button>
+      </div>
+
+      <ol class="swipe-stack" id="swipe-stack">
+        {% for film in sem.deck %}
+        <li class="swipe-card" data-slug="{{ film.slug }}" data-cat="{{ film.categorie }}">
+          {{ c.verdictCard(film, loop.index0 % 3 + 1) }}
+          <span class="swipe-stamp swipe-stamp--keep" aria-hidden="true">Je garde</span>
+          <span class="swipe-stamp swipe-stamp--skip" aria-hidden="true">Je passe</span>
+        </li>
+        {% endfor %}
+      </ol>
+
+      <div class="swipe-actions" id="swipe-actions" hidden>
+        <button class="btn btn--ghost btn--large" type="button" data-swipe="skip">Écarter</button>
+        <button class="btn btn--primary btn--large" type="button" data-swipe="keep">Garder</button>
+      </div>
+
+      <p class="sr-only" id="swipe-live" aria-live="polite"></p>
+
+      <section class="swipe-result" id="swipe-result" aria-labelledby="swipe-result-titre" hidden tabindex="-1">
+        <h2 id="swipe-result-titre"></h2>
+        <p id="swipe-reste" class="swipe-reste" hidden><span id="swipe-reste-texte"></span> <button class="btn btn--secondary btn--small" type="button" id="swipe-reste-btn">Les trier aussi</button></p>
+        <ul class="swipe-liste" id="swipe-liste"></ul>
+        <div id="swipe-ou" hidden>
+          <h3 class="partage__titre">Où les voir près de toi</h3>
+          <div id="swipe-ou-zone"></div>
+        </div>
+        <div id="swipe-partage" hidden>
+          <h3 class="partage__titre">Envoie-la dans le groupe</h3>
+          <pre class="partage__texte" id="swipe-texte" aria-label="Message prêt à envoyer"></pre>
+          <p class="partage__actions">
+            <button class="btn btn--primary" type="button" id="swipe-share" hidden>Partager</button>
+            <a class="btn btn--secondary" id="swipe-whatsapp" href="https://wa.me/" target="_blank" rel="noopener noreferrer">WhatsApp<span class="sr-only"> (s'ouvre dans un nouvel onglet)</span></a>
+            <button class="btn btn--ghost" type="button" id="swipe-copy">Copier le message</button>
+          </p>
+          <p class="sr-only" id="swipe-copy-live" aria-live="polite"></p>
+        </div>
+        <p class="swipe-groupe" id="swipe-groupe" hidden><a class="btn btn--secondary" href="{{ '/groupes/' | url }}">Comparer avec mes amis</a> <span class="caption">Chacun envoie son tri par lien : vous voyez qui garde quoi.</span></p>
+        <p><button class="btn btn--ghost btn--small" type="button" id="swipe-restart">Recommencer le tri</button></p>
+        <p class="caption">Ta liste reste dans ce navigateur, sur cet appareil. {% if site.stats.endpoint %}Si tu as accepté le comptage, les films que tu gardes ou écartes sont ajoutés, sans ton nom, aux statistiques de la communauté.{% else %}Rien n'est envoyé à CinéSwipe.{% endif %}</p>
+      </section>
+    </div>
+
+    <noscript><p class="caption">Le tri en swipe demande JavaScript. Sans lui, les films de la semaine sont listés ci-dessus et sur la <a href="{{ '/' | url }}#selection">page de la sélection</a>.</p></noscript>
+    <script type="application/json" id="swipe-data">{{ contenu.swipe | jsonSur | safe }}</script>
+    <script type="application/json" id="swipe-cinemas">{{ contenu.cinemasSwipe | jsonSur | safe }}</script>
+    {% endif %}
+  </div>
+</section>

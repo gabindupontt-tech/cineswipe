@@ -1,0 +1,97 @@
+---
+layout: base.njk
+kind: apropos
+permalink: /a-propos/
+title: "À propos, méthode et sources | CinéSwipe"
+description: "Qui fait CinéSwipe, comment les films sont choisis, d'où viennent les tarifs, mentions légales et politique de confidentialité."
+---
+{% import "components.njk" as c %}
+{% macro champ(v) %}{% if v | estAcompleter %}<mark class="a-completer">{{ v | sansAcompleter }} (à compléter)</mark>{% else %}{{ v }}{% endif %}{% endmacro %}
+
+<article class="section">
+  <div class="wrap wrap--narrow prose">
+    <h1>À propos et sources</h1>
+
+    <section id="qui" aria-labelledby="qui-t">
+      <h2 id="qui-t">Qui fait CinéSwipe</h2>
+      <p>{{ champ(site.equipe.presentation) }}</p>
+      <ul>
+        {% for m in site.equipe.membres %}<li>{{ champ(m) }}</li>{% endfor %}
+      </ul>
+    </section>
+
+    <section id="methode" aria-labelledby="methode-t">
+      <h2 id="methode-t">Notre méthode</h2>
+      <p>Chaque semaine, CinéSwipe retient 3 à 5 films. Chacun reçoit un verdict de trois lignes, toujours dans le même ordre : pour qui, le prix, pourquoi en salle.</p>
+      <p>{{ champ(site.methode_selection) }}</p>
+      <p>Le tarif affiché est un tarif constaté : il est relevé sur une page précise, dont le lien et la date sont indiqués sur chaque fiche. Le bouton de réservation renvoie vers la page du cinéma, dans un nouvel onglet. Nous ne vendons pas de billets.</p>
+
+      <h3 id="en-plus">Films indépendants et reprises</h3>
+      <p>En plus de la sélection, le swipe propose quelques films qui passent dans des cinémas indépendants (art et essai, salles de ville ou associatives) et des reprises : un film ancien qui revient à l'affiche, souvent en copie restaurée, par exemple dans un circuit comme Pathé. Ils sont marqués d'une pastille « Indépendant » ou « Reprise », avec l'année d'origine pour une reprise, et tu peux les masquer ou les isoler avec le filtre du swipe. Ils suivent les mêmes règles que les autres : verdict de trois lignes, tarif constaté, source et date.</p>
+
+      <h3 id="cinemas">Cinémas proches de toi</h3>
+      <p>Sur chaque fiche et dans ta liste du swipe, « Où le voir près de toi » classe les cinémas qui passent le film, du plus proche au plus éloigné. Tu peux utiliser ta position, taper une adresse ou une ville, ou choisir une ville dans la liste. La distance est à vol d'oiseau, pas un temps de trajet. Nous n'affichons pas les horaires : ils changent chaque semaine et sont donnés par le cinéma, vers lequel le bouton te renvoie.</p>
+      {% if contenu.cinemas.length %}
+      <ul class="cinemas-liste">
+        {% for ci in contenu.cinemas %}<li>{{ ci.nom }}, {{ ci.ville }} ({{ ci.typeLabel | lower }}) : <a href="{{ ci.site }}" target="_blank" rel="noopener noreferrer">site du cinéma<span class="sr-only"> (s'ouvre dans un nouvel onglet)</span></a>{% if ci.exemple %} <span class="chip chip--exemple">Exemple</span>{% endif %}</li>{% endfor %}
+      </ul>
+      {% endif %}
+
+      <h3 id="groupes">Groupes entre amis</h3>
+      <p>La page Groupe permet de comparer vos choix à plusieurs. Il n'y a ni compte ni serveur : chacun choisit un prénom ou un pseudo, puis envoie à ses amis un lien qui contient son tri. Quand tu ouvres le lien d'un ami, ses choix s'ajoutent à ton groupe, sur ton appareil. Le groupe se met donc à jour quand vous échangez vos liens, pas en direct. Le swipe et le groupe sont des outils pour décider vite à plusieurs, pas une messagerie ni un réseau social.</p>
+      <p>CinéSwipe n'a ni comptes, ni avis publics, ni catalogue exhaustif : nous ne parlons que des films de la sélection et de ceux ajoutés en plus.</p>
+    </section>
+
+    <section id="sources" aria-labelledby="sources-t">
+      <h2 id="sources-t">Sources et crédits des données de films</h2>
+      <p>Les tarifs sont relevés à la main par la rédaction sur les sites des cinémas. Chaque fiche indique le cinéma, la source, le lien et la date du relevé. Les tarifs et les séances peuvent changer ensuite : vérifie toujours le prix affiché avant de payer.</p>
+      <p>Les titres, dates de sortie, durées et noms de réalisateurs sont saisis par la rédaction. Les verdicts sont écrits par l'équipe. Le crédit de chaque affiche est indiqué sous l'image, sur la fiche du film. Les adresses des cinémas sont saisies par l'équipe à partir de leurs sites ; la carte et les itinéraires renvoient vers OpenStreetMap, © les contributeurs d'OpenStreetMap, licence ODbL.</p>
+      <p>La recherche d'une adresse ou d'une ville utilise la Base Adresse Nationale (api-adresse.data.gouv.fr, service de l'État), sous licence ouverte. Elle n'est interrogée que si tu tapes une adresse.</p>
+      {% if site.credits_supplementaires.length %}
+      <ul>{% for cr in site.credits_supplementaires %}<li>{{ cr }}</li>{% endfor %}</ul>
+      {% endif %}
+
+      <h3 id="chiffres">Le contexte en chiffres</h3>
+      <p>Ces chiffres expliquent pourquoi le prix compte pour les 18-25 ans. Chacun a sa source, sa date et son nombre de sources indépendantes. Nous écrivons « une seule source » quand c'est le cas : ce sont des repères, pas des vérités à retenir sans vérifier.</p>
+      <ul class="faits">
+        {% for f in sources.contexte %}
+        <li class="fait">
+          <p class="fait__chiffre price">{{ f.chiffre }}</p>
+          <p class="fait__texte">{{ f.texte }}</p>
+          <p class="caption">
+            {% if f.calcul %}Calcul de l'équipe. {% endif %}Source : <a href="{{ f.sourceUrl }}" target="_blank" rel="noopener noreferrer">{{ f.sourceNom }}<span class="sr-only"> (s'ouvre dans un nouvel onglet)</span></a>.
+            {% if f.publieFr %}Publié le {{ f.publieFr }}. {% endif %}Consulté le {{ f.consulteFr }}.
+            {% if f.sources == 1 %}Une seule source.{% else %}{{ f.sources }} sources.{% endif %}
+            {% if f.note %} {{ f.note }}{% endif %}
+          </p>
+        </li>
+        {% endfor %}
+      </ul>
+    </section>
+
+    <section id="mentions-legales" aria-labelledby="ml-t">
+      <h2 id="ml-t">Mentions légales</h2>
+      <p><strong>Éditeur du site :</strong> {{ champ(site.editeur.nom) }}.<br>
+      <strong>Directeur de la publication :</strong> {{ champ(site.editeur.directeur_publication) }}.<br>
+      <strong>Contact :</strong> {{ champ(site.editeur.contact_email) }}.</p>
+      <p><strong>Hébergeur :</strong> {{ site.hebergeur.nom }}, {{ site.hebergeur.adresse }}.</p>
+      <p>Les marques, titres de films et affiches appartiennent à leurs ayants droit. Ils sont cités pour informer le public sur les films à l'affiche.</p>
+    </section>
+
+    <section id="confidentialite" aria-labelledby="conf-t">
+      <h2 id="conf-t">Politique de confidentialité</h2>
+      <p><strong>Qui est responsable ?</strong> {{ champ(site.editeur.nom) }}. Pour toute question : {{ champ(site.editeur.contact_email) }}.</p>
+      <p><strong>Ce que CinéSwipe ne demande pas.</strong> Pas de compte, pas de mot de passe, pas d'avis publics.</p>
+      <p><strong>Mesure d'audience.</strong> {% if site.ga4_id %}Si tu cliques sur « Accepter » dans la bannière, nous utilisons Google Analytics 4 (Google) pour compter les visites, les pages vues et ces actions : la fin d'un tri en swipe (avec le nombre de films gardés), un clic vers la réservation d'un cinéma (avec le film et le cinéma), la création, l'ouverture ou le partage d'un lien de groupe (sans son nom ni les prénoms), l'utilisation de la recherche de cinémas (seulement la méthode choisie, jamais ta position ni l'adresse tapée) et un clic sur le lien de newsletter. Google dépose pour cela des cookies (_ga et _ga_*), conservés 13 mois au maximum, et peut traiter ces données hors de l'Union européenne, avec les garanties prévues par le RGPD. La durée de conservation des données dans Google Analytics est réglée dans le compte de l'équipe (2 mois par défaut). Si tu cliques sur « Refuser », aucun script Google n'est chargé et rien n'est mesuré. Ton choix est gardé 6 mois dans ton navigateur et tu peux le changer à tout moment avec « Gérer mes cookies » en bas de page. Les chiffres d'audience sont donc des minimums.{% else %}La mesure d'audience n'est pas activée pour l'instant. Aucun cookie de mesure n'est déposé.{% endif %}</p>
+      <p><strong>Newsletter.</strong> Il n'y a pas d'envoi d'e-mail : la newsletter est publiée sur nos pages Instagram et TikTok, et le bouton « Recevoir la newsletter » ouvre un lien externe. Le site CinéSwipe ne demande ni ne garde aucune adresse e-mail. Les services vers lesquels le lien mène ont leur propre politique de confidentialité.</p>
+      <p><strong>Ce qui reste sur ton appareil.</strong> Ta liste de films du swipe, tes filtres de catégories du swipe, ton prénom ou pseudo et tes groupes, et ton choix sur les cookies sont enregistrés dans le stockage de ton navigateur. Ils restent sur ton appareil{% if site.stats.endpoint %}, sauf ce que décrivent les paragraphes « Groupes » et « Statistiques de la communauté » quand tu les actives{% else %} et ne sont jamais envoyés à CinéSwipe{% endif %}. Tu les effaces en vidant les données du site dans ton navigateur, avec « Recommencer le tri » ou avec « Quitter le groupe ».</p>
+      <p><strong>Groupes.</strong> Un lien de groupe contient le nom du groupe, les prénoms ou pseudos choisis et les films que chacun garde ou écarte. Ces informations sont dans la partie du lien après le signe #, que ton navigateur n'envoie pas aux serveurs de CinéSwipe. En revanche, quand tu envoies le lien par WhatsApp, SMS ou autre, ce service et les personnes qui reçoivent le lien y ont accès : n'utilise pas ton nom complet si tu ne veux pas qu'il circule. {% if site.stats.endpoint %}Si tu coches « Mise à jour en direct » en créant un groupe, c'est différent : le nom du groupe, les prénoms ou pseudos et les films gardés ou écartés par chacun sont envoyés à un petit service hébergé chez Cloudflare, qui les conserve 14 jours pour que les membres voient les choix des autres. Le lien du groupe est alors un code court : toute personne qui le connaît peut voir et modifier le groupe, alors n'y mets pas ton nom complet. Sans cette case, nous ne gardons aucune copie des groupes.{% else %}Nous ne gardons aucune copie des groupes.{% endif %}</p>
+      {% if site.stats.endpoint %}<p><strong>Statistiques de la communauté.</strong> Si tu cliques sur « Accepter » dans la bannière, la fin de ton tri dans le swipe envoie à ce même service, une fois par semaine, ce que tu as gardé ou écarté, film par film, sans ton nom ni identifiant. Ces compteurs servent à afficher sur les fiches des phrases comme « 78 % des personnes qui ont trié ce film l'ont gardé », seulement quand assez de personnes l'ont trié. Le service voit ton adresse IP le temps de la requête, comme tout serveur, et ne la conserve pas. L'affichage de ces pourcentages sur une fiche demande aussi un appel au service, même si tu as refusé. Ce sont des chiffres indicatifs : une même personne peut participer plusieurs fois et seuls ceux qui ont accepté sont comptés.</p>{% endif %}
+      <p><strong>Cartes.</strong> Les cartes de réduction que tu coches sur la page « Mes cartes » restent dans ton navigateur et ne sont envoyées nulle part.</p>
+      <p><strong>Localisation.</strong> Ta position n'est demandée que si tu cliques sur « Me localiser », et ton navigateur te demande ton accord. Elle sert à calculer des distances dans ton navigateur : elle n'est pas envoyée à CinéSwipe ni à Google Analytics. Une position GPS est arrondie à environ un kilomètre et une adresse tapée à une centaine de mètres ; elle n'est gardée que le temps de l'onglet. Si tu tapes une adresse ou une ville, le texte tapé est envoyé à la Base Adresse Nationale (api-adresse.data.gouv.fr), un service de l'État, qui voit alors ton adresse IP et ce texte. Tu peux aussi choisir une ville dans la liste, sans aucune requête.</p>
+      <p><strong>Polices.</strong> Les polices sont hébergées sur le site : aucune requête vers Google Fonts.</p>
+      <p><strong>Liens externes.</strong> Les pages de réservation des cinémas, les sources de tarifs et la carte OpenStreetMap sont des sites tiers, avec leurs propres règles.</p>
+      <p><strong>Tes droits.</strong> Tu peux demander l'accès, la rectification ou l'effacement de tes données, t'opposer à leur traitement ou en demander la limitation, en écrivant à l'adresse de contact ci-dessus. Tu peux aussi saisir la CNIL (cnil.fr).</p>
+    </section>
+  </div>
+</article>

@@ -1,0 +1,54 @@
+# ============================================================
+#  CONTEXTE EN CHIFFRES (page "À propos et sources")
+#  Un bloc par chiffre. Règles de l'équipe : jamais de chiffre sans source, lien et date.
+#  - sources : nombre de sources INDÉPENDANTES (1 si plusieurs pages viennent de la même étude).
+#  - consulte : jour où l'équipe a ouvert la page. Re-vérifie avant de publier.
+#  - calcul : mets true si le chiffre est calculé par l'équipe à partir des sources citées.
+#  Pour ajouter un chiffre, copie un bloc. Pour en retirer un, supprime-le.
+# ============================================================
+contexte:
+  - chiffre: "88 %"
+    texte: "des 15-24 ans jugent la place de cinéma trop chère, et 59 % d'entre eux ont une remise jeune ou étudiante."
+    source_nom: "CNC, « Les jeunes et le cinéma » (étude BVA, 2 508 interviews, janvier 2024)"
+    source_url: https://www.occitanie-films.fr/wp-content/uploads/2024/07/Pre%CC%81sentation-e%CC%81tude-Jeunes-et-Cine%CC%81ma.pdf
+    publie: 2024-06-06
+    consulte: 2026-10-26
+    sources: 1
+    note: "Une seule étude. Les pages du CNC citées dans notre dossier de travail présentent cette même étude."
+
+  - chiffre: "85 %"
+    texte: "des 15-24 ans sont allés au moins une fois au cinéma en 2023, contre 64 % de l'ensemble des Français."
+    source_nom: "CNC, « Les jeunes et le cinéma » (étude BVA, janvier 2024), reprise par franceinfo"
+    source_url: https://www.franceinfo.fr/culture/cinema/les-jeunes-et-le-cinema-85-des-15-24-ans-disent-etre-alles-au-moins-une-fois-au-cinema-en-2023_6588903.html
+    publie: 2024-06-06
+    consulte: 2026-10-26
+    sources: 1
+    note: "Chiffre déclaré par les personnes interrogées. Même étude que le chiffre précédent, relayée par la presse."
+
+  - chiffre: "8,26 €"
+    texte: "le prix moyen payé par un étudiant pour une séance, contre 11,30 € au plein tarif."
+    source_nom: "Observatoire de la consommation (ODLC), enquête sur les prix du cinéma, 911 cinémas"
+    source_url: https://salon-arles-avignon.quechoisirensemble.fr/wp-content/uploads/sites/14/2026/03/1_Rapport_prix_cine.pdf
+    publie: 2025-09-27
+    consulte: 2026-10-26
+    sources: 1
+    note: "Relevés du 13 au 27 septembre 2025. Un tarif moyen n'est pas le tarif de ton cinéma : sur chaque fiche, nous affichons un tarif constaté dans un cinéma précis."
+
+  - chiffre: "19,90 €"
+    texte: "par mois pour l'abonnement UGC Illimité des moins de 26 ans."
+    source_nom: "UGC, tarifs officiels UGC Illimité"
+    source_url: https://www.ugc.fr/TarifsUGCIllimite.html
+    publie: 2026-10-26
+    consulte: 2026-10-26
+    sources: 1
+    note: "Tarif lu sur le site d'UGC le jour de la consultation. Il peut changer : vérifie sur la page d'UGC."
+
+  - chiffre: "environ 2,4 films"
+    texte: "par mois : c'est à partir de là que l'abonnement à 19,90 € coûte moins cher que des séances au tarif étudiant moyen de 8,26 €."
+    source_nom: "Calcul de l'équipe CinéSwipe : 19,90 € ÷ 8,26 € ≈ 2,41, à partir des deux sources ci-dessus"
+    source_url: https://www.ugc.fr/TarifsUGCIllimite.html
+    publie: 2026-10-26
+    consulte: 2026-10-26
+    sources: 2
+    calcul: true
+    note: "Ce n'est pas un conseil d'achat : le seuil change avec le tarif de ton cinéma et les conditions de l'abonnement."

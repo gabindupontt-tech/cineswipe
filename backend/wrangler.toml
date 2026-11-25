@@ -1,0 +1,12 @@
+name = "cineswipe-compteurs"
+main = "cloudflare-worker.js"
+compatibility_date = "2026-01-01"
+
+# 1. Crée l'espace de stockage :  npx wrangler kv namespace create CINESWIPE   puis colle l'id ci-dessous.
+[[kv_namespaces]]
+binding = "CINESWIPE"
+id = "A_COMPLETER_ID_DU_KV"
+
+[vars]
+# Adresse(s) du site autorisée(s) à appeler le service, séparées par des virgules, sans "/" final.
+ALLOWED_ORIGIN = "https://A_COMPLETER.github.io"

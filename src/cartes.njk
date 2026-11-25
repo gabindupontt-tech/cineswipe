@@ -1,0 +1,52 @@
+---
+layout: base.njk
+kind: cartes
+permalink: /cartes/
+pageScripts:
+  - /assets/js/cartes.js
+title: "Mes cartes : ta carte cinéma est-elle rentable ? | CinéSwipe"
+description: "Renseigne tes cartes et abonnements, et calcule à partir de combien de films par mois une carte illimitée devient rentable face à la place à l'unité."
+---
+{% set ref = contenu.referenceCartes %}
+<section class="section cartes" aria-labelledby="cartes-titre">
+  <div class="wrap wrap--narrow">
+    <h1 id="cartes-titre">Ta carte cinéma vaut-elle le coup ?</h1>
+    {% if not contenu.cartes.length or not ref %}
+      <p>Cette page sera disponible dès que l'équipe aura relevé les tarifs.</p>
+    {% else %}
+    <p class="section__intro">Coche tes cartes : les fiches film afficheront ton prix. Puis compare le prix à la séance et l'abonnement selon le nombre de films que tu vois par mois.</p>
+
+    <div class="cartes-app" id="cartes-app">
+      <fieldset class="cartes-choix">
+        <legend class="lieu__label">Mes cartes</legend>
+        {% for carte in contenu.cartes %}
+        <label class="carte-choix"><input type="checkbox" data-carte="{{ carte.id }}"> <span>{{ carte.nom }}{% if carte.type == "abonnement" %} <span class="caption">({{ carte.prixMensuelFr }} par mois, {{ carte.circuit }})</span>{% endif %}</span></label>
+        {% endfor %}
+        <p class="caption">Rien n'est envoyé : tes cartes restent dans ce navigateur.</p>
+      </fieldset>
+
+      <div class="simu" id="simu">
+        <h2>Le calcul</h2>
+        <label class="lieu__label" for="simu-films">Films vus au cinéma par mois : <span id="simu-films-val" class="price">2</span></label>
+        <input id="simu-films" type="range" min="0" max="8" step="0.5" value="2">
+        {% for carte in contenu.cartes %}{% if carte.type == "abonnement" %}
+        <div class="simu__abo" data-abo="{{ carte.id }}" data-prix="{{ carte.prixMensuel }}">
+          <h3>{{ carte.nom }}</h3>
+          <p class="simu__ligne">À la séance : <span class="price" data-seance></span> par mois. Abonnement : <span class="price">{{ carte.prixMensuelFr }}</span> par mois.</p>
+          <p class="simu__verdict" data-verdict aria-live="polite"></p>
+          <p class="caption">Abonnement relevé le {{ carte.dateFr }} : <a href="{{ carte.sourceUrl }}" target="_blank" rel="noopener noreferrer">{{ carte.sourceNom }}<span class="sr-only"> (s'ouvre dans un nouvel onglet)</span></a>.</p>
+        </div>
+        {% endif %}{% endfor %}
+        <p class="caption">Prix de la place utilisé pour le calcul : {{ ref.montantFr }}. {{ ref.libelle }}. Source : <a href="{{ ref.sourceUrl }}" target="_blank" rel="noopener noreferrer">{{ ref.sourceNom }}<span class="sr-only"> (s'ouvre dans un nouvel onglet)</span></a>, consultée le {{ ref.dateFr }}. {{ ref.note }} Calcul de l'équipe : prix mensuel de l'abonnement divisé par ce prix. Remplace-le par le prix de ton cinéma si tu le connais.</p>
+        <label class="lieu__label" for="simu-prix">Prix de ta place (en euros)</label>
+        <input class="lieu__champ" id="simu-prix" type="number" min="1" max="30" step="0.1" value="{{ ref.montant }}" inputmode="decimal">
+        {% if ref.entreesParAn %}<p class="caption">Repère : les 15-24 ans qui vont au cinéma y sont allés {{ ref.entreesParAn.valeur | replace(".", ",") }} fois en moyenne sur l'année 2025, soit bien moins d'une fois par mois ({{ ref.entreesParAn.sourceNom }}, <a href="{{ ref.entreesParAn.sourceUrl }}" target="_blank" rel="noopener noreferrer">source<span class="sr-only"> (s'ouvre dans un nouvel onglet)</span></a>, consultée le {{ ref.entreesParAn.dateFr }}). {{ ref.entreesParAn.note }}</p>{% endif %}
+      </div>
+
+      <p class="section__cta"><a class="btn btn--primary" href="{{ '/' | url }}">Voir la sélection de la semaine</a> <a class="btn btn--ghost" href="{{ '/tarifs/' | url }}">Guide des tarifs</a> <a class="btn btn--secondary" href="{{ '/#newsletter' | url }}">Recevoir la sélection chaque semaine</a></p>
+    </div>
+    <noscript><p class="caption">Le calcul demande JavaScript. Le prix mensuel de chaque abonnement et le prix de la place sont indiqués ci-dessus.</p></noscript>
+    <script type="application/json" id="cartes-data">{{ { cartes: contenu.cartes, reference: { montant: ref.montant } } | jsonSur | safe }}</script>
+    {% endif %}
+  </div>
+</section>

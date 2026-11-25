@@ -1,0 +1,73 @@
+{# ===== Composants de la charte. Ne pas modifier sans regarder la charte graphique. ===== #}
+
+{# WaveDivider : séparateur de sections en vague. "couleur" = classe de la section qui suit. #}
+{% macro wave(suivante="sunk", variante=1) %}
+<div class="wave wave--{{ suivante }}" aria-hidden="true">
+  {% if variante == 1 %}
+  <svg viewBox="0 0 1440 96" preserveAspectRatio="none" focusable="false"><path d="M0 48C120 12 240 12 360 40s240 52 360 28 240-56 360-40 240 40 360 24V96H0Z"/></svg>
+  {% else %}
+  <svg viewBox="0 0 1440 96" preserveAspectRatio="none" focusable="false"><path d="M0 30C150 70 270 70 420 36S690 4 840 36s300 60 600 6V96H0Z"/></svg>
+  {% endif %}
+</div>
+{% endmacro %}
+
+{# Chip : pastille de genre, de durée ou de statut. #}
+{% macro chips(film) %}
+<ul class="chips" aria-label="Informations sur le film">
+  {% if film.exemple %}<li class="chip chip--exemple">Exemple à remplacer</li>{% endif %}
+  {% if film.categorie == "independant" %}<li class="chip chip--indep">Indépendant</li>{% elif film.categorie == "reprise" %}<li class="chip chip--reprise">Reprise{% if film.annee %} <span class="sr-only">de</span> {{ film.annee }}{% endif %}</li>{% endif %}
+  {% if film.bonPlan %}<li class="chip chip--bonplan">Bon plan</li>{% endif %}
+  {% for g in film.genres %}<li class="chip">{{ g }}</li>{% endfor %}
+  {% if film.dureeFr %}<li class="chip">{{ film.dureeFr }}</li>{% endif %}
+</ul>
+{% endmacro %}
+
+{# PriceBadge : disque popcorn penché de -8°. #}
+{% macro priceBadge(film) %}
+<p class="price-badge">
+  <span class="price-badge__inner">
+    <span class="price price-badge__montant">{{ film.tarif.montantFr }}</span>
+    <span class="price-badge__type">{{ film.tarif.type }}</span>
+  </span>
+  <span class="sr-only">Tarif {{ film.tarif.type }} constaté</span>
+</p>
+{% endmacro %}
+
+{# Affiche découpée dans un blob (jamais un rectangle). #}
+{% macro poster(film, sizes="(min-width: 700px) 340px, 80vw", forme=1, eager=false) %}
+<div class="blob blob--{{ forme }}">
+  {% if film.poster %}
+  <picture>
+    <source type="image/webp" srcset="{{ film.poster.webpSrcset }}" sizes="{{ sizes }}">
+    <img src="{{ film.poster.jpegSrc }}" srcset="{{ film.poster.jpegSrcset }}" sizes="{{ sizes }}" width="{{ film.poster.largeur }}" height="{{ film.poster.hauteur }}" alt="{{ film.afficheAlt }}" {% if not eager %}loading="lazy"{% endif %} decoding="async">
+  </picture>
+  {% else %}
+  <span class="blob__initiale" aria-hidden="true">{{ film.titre | initiale }}</span>
+  {% endif %}
+</div>
+{% endmacro %}
+
+{# Les trois lignes du verdict, toujours dans cet ordre. #}
+{% macro verdictLines(film) %}
+<dl class="verdict">
+  <div class="verdict__row"><dt class="label">Pour qui</dt><dd>{{ film.verdict.pourQui }}</dd></div>
+  <div class="verdict__row"><dt class="label">Prix</dt><dd>{{ film.verdict.prix }}</dd></div>
+  <div class="verdict__row"><dt class="label">Pourquoi en salle</dt><dd>{{ film.verdict.pourquoiEnSalle }}</dd></div>
+</dl>
+{% endmacro %}
+
+{# VerdictCard : la carte de la sélection. #}
+{% macro verdictCard(film, forme=1) %}
+<article class="verdict-card" aria-labelledby="titre-{{ film.slug }}">
+  <div class="verdict-card__media">
+    {{ poster(film, "(min-width: 700px) 300px, 70vw", forme) }}
+    {{ priceBadge(film) }}
+  </div>
+  <div class="verdict-card__body">
+    {{ chips(film) }}
+    <h3 class="verdict-card__title" id="titre-{{ film.slug }}">{{ film.titre }}</h3>
+    {{ verdictLines(film) }}
+    <p class="verdict-card__cta"><a class="btn btn--ghost" href="{{ film.url | url }}">Voir la fiche<span class="sr-only"> de {{ film.titre }}</span></a></p>
+  </div>
+</article>
+{% endmacro %}

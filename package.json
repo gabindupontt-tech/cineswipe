@@ -1,0 +1,21 @@
+{
+  "name": "cineswipe",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CinéSwipe, la sélection hebdomadaire de films qui valent le prix (site statique).",
+  "type": "module",
+  "scripts": {
+    "build": "eleventy",
+    "dev": "eleventy --serve"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@11ty/eleventy": "^3.1.7",
+    "@11ty/eleventy-img": "^7.1.1",
+    "gray-matter": "^4.0.3",
+    "js-yaml": "^5.5.0",
+    "markdown-it": "^15.0.3"
+  }
+}

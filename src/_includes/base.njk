@@ -1,0 +1,98 @@
+{%- import "components.njk" as c -%}
+{%- set pageTitle = title if title else site.nom -%}
+{%- set pageUrl = page.url | abs -%}
+{%- set image = ogImage or ('/assets/img/og-default.png' | abs) -%}
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ pageTitle }}</title>
+  <meta name="description" content="{{ description or site.slogan }}">
+  <link rel="canonical" href="{{ pageUrl }}">
+  {% if noindex %}<meta name="robots" content="noindex, follow">{% endif %}
+  {% if site.search_console_verification %}<meta name="google-site-verification" content="{{ site.search_console_verification }}">{% endif %}
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#fff5f1" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#1c1228" media="(prefers-color-scheme: dark)">
+  <meta property="og:site_name" content="CinéSwipe">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:type" content="{{ ogType or 'website' }}">
+  <meta property="og:title" content="{{ pageTitle }}">
+  <meta property="og:description" content="{{ description or site.slogan }}">
+  <meta property="og:url" content="{{ pageUrl }}">
+  <meta property="og:image" content="{{ image }}">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/svg+xml" href="{{ '/assets/img/logo-signe.svg' | url }}">
+  <link rel="preload" href="{{ '/assets/fonts/fredoka-latin-700-normal.woff2' | url }}" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="{{ '/assets/fonts/figtree-latin-400-normal.woff2' | url }}" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="{{ '/assets/css/styles.css' | url }}">
+  <script>document.documentElement.classList.add('js')</script>
+  {% for bloc in jsonld %}<script type="application/ld+json">{{ bloc | jsonSur | safe }}</script>
+  {% endfor %}
+</head>
+<body class="{% if bonPlanPage %}has-bonplan{% endif %}" data-ga="{{ site.ga4_id }}" data-api="{{ site.stats.endpoint }}" data-seuil="{{ site.stats.seuil or 30 }}"{% if site.stats.demo and not site.stats.endpoint %} data-demo="1"{% endif %} data-base="{{ '/' | url }}">
+  <a class="skip-link" href="#contenu">Aller au contenu</a>
+
+  <header class="site-header">
+    <div class="wrap site-header__inner">
+      <a class="logo" href="{{ '/' | url }}" aria-label="CinéSwipe, accueil">
+        <img class="logo__signe" src="{{ '/assets/img/logo-signe.svg' | url }}" width="40" height="40" alt="">
+        <span class="logo__mot">cinéswipe</span>
+      </a>
+      {%- set nav = [
+        { label: "Sélection", href: "/", actif: page.url == "/" },
+        { label: "Articles", href: "/articles/", actif: page.url.startsWith("/articles/") },
+        { label: "Swipe", href: "/swipe/", actif: page.url == "/swipe/" },
+        { label: "Groupe", href: "/groupes/", actif: page.url == "/groupes/" },
+        { label: "Mes cartes", href: "/cartes/", actif: page.url == "/cartes/" },
+        { label: "À propos", href: "/a-propos/", actif: page.url == "/a-propos/" }
+      ] -%}
+      <nav class="site-nav" aria-label="Navigation principale">
+        <ul>
+          {% for n in nav %}<li><a class="pill-link" href="{{ n.href | url }}"{% if n.actif %} aria-current="page"{% endif %}>{{ n.label }}</a></li>{% endfor %}
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenu" tabindex="-1">
+    {{ content | safe }}
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__wave" aria-hidden="true"><svg viewBox="0 0 1440 96" preserveAspectRatio="none" focusable="false"><path d="M0 30C150 70 270 70 420 36S690 4 840 36s300 60 600 6V96H0Z"/></svg></div>
+    <div class="wrap site-footer__inner">
+      <p class="site-footer__marque"><span class="logo__mot">cinéswipe</span><br><span class="caption">{{ site.slogan }}</span></p>
+      <nav aria-label="Pied de page">
+        <ul class="site-footer__liens">
+          <li><a href="{{ '/articles/' | url }}">Articles</a></li>
+          <li><a href="{{ '/tarifs/' | url }}">Guide des tarifs</a></li>
+          <li><a href="{{ '/archives/' | url }}">Archives</a></li>
+          <li><a href="{{ '/a-propos/' | url }}">À propos et sources</a></li>
+          <li><a href="{{ '/a-propos/#mentions-legales' | url }}">Mentions légales</a></li>
+          <li><a href="{{ '/a-propos/#confidentialite' | url }}">Confidentialité</a></li>
+          {% if site.ga4_id or site.stats.endpoint %}<li><button class="link-btn" type="button" data-consent-open>Gérer mes cookies</button></li>{% endif %}
+        </ul>
+      </nav>
+    </div>
+  </footer>
+
+  {% if site.ga4_id or site.stats.endpoint %}
+  <div class="consent" id="consent" role="dialog" aria-labelledby="consent-titre" aria-describedby="consent-texte" hidden>
+    <h2 class="consent__titre" id="consent-titre">On compte, mais seulement si tu es d'accord</h2>
+    <p id="consent-texte">{% if site.ga4_id %}On mesure l'audience avec Google Analytics{% endif %}{% if site.ga4_id and site.stats.endpoint %} et {% endif %}{% if site.stats.endpoint %}on compte, sans te nommer, les films que tu gardes pour afficher des statistiques de la communauté{% endif %}. Si tu refuses, rien n'est mesuré ni envoyé et le site fonctionne pareil. <a href="{{ '/a-propos/#confidentialite' | url }}">En savoir plus</a>.</p>
+    <div class="consent__actions">
+      <button class="btn btn--secondary" type="button" data-consent="denied">Refuser</button>
+      <button class="btn btn--primary" type="button" data-consent="granted">Accepter</button>
+    </div>
+  </div>
+  {% endif %}
+
+  <script src="{{ '/assets/js/consent.js' | url }}" defer></script>
+  <script src="{{ '/assets/js/main.js' | url }}" defer></script>
+  {% for s in pageScripts %}<script src="{{ s | url }}" defer></script>
+  {% endfor %}
+  {% if pageScript %}<script src="{{ pageScript | url }}" defer></script>{% endif %}
+</body>
+</html>

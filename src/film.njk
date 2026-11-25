@@ -1,0 +1,125 @@
+---
+layout: base.njk
+kind: film
+pageScripts:
+  - /assets/js/geo.js
+  - /assets/js/stats.js
+  - /assets/js/cartes.js
+pagination:
+  data: contenu.films
+  size: 1
+  alias: film
+permalink: "{{ film.url }}"
+eleventyComputed:
+  title: "{{ film.titreSeo }} | CinéSwipe"
+  description: "{{ film.description }}"
+---
+{% import "components.njk" as c %}
+<article class="section film">
+  <div class="wrap">
+    <p class="film__retour"><a class="btn btn--ghost btn--small" href="{{ film.semaineUrl | url }}"><span aria-hidden="true">←</span> {{ film.semaineLabel }}</a></p>
+
+    <div class="film__grid">
+      <div class="film__media">
+        {{ c.poster(film, "(min-width: 900px) 400px, 80vw", 2, true) }}
+        {{ c.priceBadge(film) }}
+        {% if film.afficheCredit %}<p class="caption film__credit">Affiche : {{ film.afficheCredit }}</p>{% endif %}
+      </div>
+
+      <div class="film__texte">
+        {{ c.chips(film) }}
+        <h1>{{ film.titre }}</h1>
+        <p class="film__meta">
+          {% if film.sortieFr %}Sortie le {{ film.sortieFr }}{% endif %}{% if film.realisateur %}, de {{ film.realisateur }}{% endif %}.
+          {% if film.titreOriginal %}Titre original : {{ film.titreOriginal }}.{% endif %}
+        </p>
+        {% if film.resume %}<p>{{ film.resume }}</p>{% endif %}
+
+        <div class="verdict-card verdict-card--solo">
+          <h2 class="sr-only">Le verdict en trois lignes</h2>
+          {{ c.verdictLines(film) }}
+        </div>
+        {% if site.stats.endpoint or site.stats.demo %}<p class="stat-film" id="stat-film" data-slug="{{ film.slug }}" data-semaine="{{ film.semaineId }}" hidden></p>{% endif %}
+
+        <section class="tarif" aria-labelledby="tarif-titre">
+          <h2 id="tarif-titre">Tarif constaté</h2>
+          <p class="tarif__ligne"><span class="price tarif__montant">{{ film.tarif.montantFr }}</span> <span>tarif {{ film.tarif.type }}, {{ film.tarif.cinema }}</span></p>
+          <p class="mon-prix" id="mon-prix" data-tarif-type="{{ film.tarif.type }}" data-montant="{{ film.tarif.montant }}" hidden></p>
+          <p class="caption">Relevé le {{ film.tarif.dateFr }}{% if film.tarif.fraicheur %} <span class="fraicheur{% if film.tarif.fraicheur.ancien %} fraicheur--alerte{% endif %}">({{ film.tarif.fraicheur.texte | lower }}{% if film.tarif.fraicheur.ancien %}, à revérifier{% endif %})</span>{% endif %}. Source : <a href="{{ film.tarif.sourceUrl }}" target="_blank" rel="noopener noreferrer">{{ film.tarif.sourceNom }}<span class="sr-only"> (s'ouvre dans un nouvel onglet)</span></a>. Les tarifs peuvent changer : vérifie le prix affiché avant de payer.</p>
+        </section>
+
+        <p class="film__reserver">
+          <a class="btn btn--primary btn--large" href="{{ film.reservation.url }}" target="_blank" rel="noopener noreferrer"
+             data-track="screening_click" data-film="{{ film.slug }}" data-cinema="{{ film.reservation.cinema }}" data-semaine="{{ film.semaineId }}">
+            Réserver sur le site du cinéma<span class="sr-only"> (s'ouvre dans un nouvel onglet)</span>
+            <svg class="btn__icone" viewBox="0 0 20 20" width="20" height="20" aria-hidden="true" focusable="false"><path d="M5 15 15 5M7 5h8v8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </p>
+        <p class="caption">Tu quittes CinéSwipe pour la page de réservation de {{ film.reservation.cinema }}.</p>
+
+        <p class="film__actions">
+          {% if film.bandeAnnonce %}<a class="btn btn--ghost btn--small" href="{{ film.bandeAnnonce }}" target="_blank" rel="noopener noreferrer" data-track="trailer_click" data-film="{{ film.slug }}" data-semaine="{{ film.semaineId }}">Voir la bande-annonce<span class="sr-only"> de {{ film.titre }} (s'ouvre dans un nouvel onglet)</span></a>{% endif %}
+          {% set texteWa = film.titre ~ " : " ~ film.verdict.pourQui ~ " " ~ film.urlAbs ~ "?utm_source=partage&utm_medium=whatsapp&utm_campaign=film_share" %}
+          <a class="btn btn--secondary btn--small" href="https://wa.me/?text={{ texteWa | urlencode }}" target="_blank" rel="noopener noreferrer" data-track="film_share" data-methode="whatsapp" data-film="{{ film.slug }}" data-semaine="{{ film.semaineId }}">Envoyer au groupe<span class="sr-only"> par WhatsApp (s'ouvre dans un nouvel onglet)</span></a>
+          <button class="btn btn--secondary btn--small" type="button" id="film-share" data-titre="{{ film.titre }}" data-texte="{{ film.verdict.pourQui }}" data-url="{{ film.urlAbs }}?utm_source=partage&utm_medium=share&utm_campaign=film_share" data-film="{{ film.slug }}" data-semaine="{{ film.semaineId }}" hidden>Partager</button>
+        </p>
+
+        {% if film.projections.length %}
+        <section class="ou-voir" aria-labelledby="ouvoir-titre">
+          <h2 id="ouvoir-titre">Où le voir près de toi</h2>
+          <div id="ou-voir-lieu" hidden></div>
+          <ol class="seances__liste" id="ou-voir-liste">
+            {% for p in film.projections %}
+            <li class="seance" data-circuit="{{ p.cinema.circuit }}" data-cinema="{{ p.cinemaId }}" data-ville="{{ p.cinema.ville }}" data-lat="{{ p.cinema.lat }}" data-lng="{{ p.cinema.lng }}">
+              <div class="seance__tete">
+                <h3 class="seance__nom">{{ p.cinema.nom }}</h3>
+                <span class="chip">{% if p.cinema.type == "independant" %}Indépendant{% else %}{{ p.cinema.circuit or "Circuit" }}{% endif %}</span>
+                <p class="seance__dist price" hidden></p>
+              </div>
+              <p class="caption seance__adresse"><a href="{{ p.cinema.osm }}" target="_blank" rel="noopener noreferrer">{{ p.cinema.adresse }}<span class="sr-only"> sur la carte OpenStreetMap (s'ouvre dans un nouvel onglet)</span></a></p>
+              {% if p.tarif %}<p class="caption">Tarif {{ p.tarif.type }} constaté ici : <span class="price">{{ p.tarif.montantFr }}</span>, relevé le {{ p.tarif.dateFr }}{% if p.tarif.fraicheur.ancien %} <span class="fraicheur fraicheur--alerte">({{ p.tarif.fraicheur.texte | lower }}, à revérifier)</span>{% endif %}. <a href="{{ p.tarif.sourceUrl }}" target="_blank" rel="noopener noreferrer">{{ p.tarif.sourceNom }}<span class="sr-only"> (s'ouvre dans un nouvel onglet)</span></a>.</p>{% endif %}
+              <p><a class="btn btn--secondary btn--small" href="{{ p.url }}" target="_blank" rel="noopener noreferrer"
+                    data-track="screening_click" data-film="{{ film.slug }}" data-cinema="{{ p.cinema.nom }}" data-semaine="{{ film.semaineId }}">
+                {% if p.urlFilm %}Voir les séances{% else %}Site du cinéma{% endif %}<span class="sr-only"> de {{ film.titre }} chez {{ p.cinema.nom }} (s'ouvre dans un nouvel onglet)</span></a>{% if not p.urlFilm %} <span class="caption">Cherche le film sur la page d'accueil du cinéma.</span>{% endif %}</p>
+            </li>
+            {% endfor %}
+          </ol>
+          <p class="caption" id="ou-voir-note" aria-live="polite">Cinémas listés par la rédaction. Avec JavaScript, tu peux les classer par distance.</p>
+          <p class="caption">Le tarif {{ film.tarif.type }} de {{ film.tarif.montantFr }} a été relevé chez {{ film.tarif.cinema }}. Les autres cinémas peuvent avoir un autre prix : vérifie-le sur leur site avant de réserver.</p>
+        </section>
+        {% endif %}
+
+        {% if film.maison %}
+        <section class="maison" aria-labelledby="maison-titre">
+          <h2 id="maison-titre">Et à la maison ?</h2>
+          <p class="caption">Si tu préfères attendre ou si la séance est trop chère cette semaine, voici de quoi regarder sans sortir. Sélection de la rédaction, pas une liste complète.</p>
+          <ul class="maison__liste">
+            {% for t in film.maison.titres %}
+            <li class="maison__titre"><span class="maison__nom">{{ t.titre }}</span> <span class="chip">{{ t.plateforme }}</span><br><span>{{ t.pourquoi }}</span></li>
+            {% endfor %}
+          </ul>
+          {% if film.maison.abonnement %}<p>Pour comparer : un mois de {{ film.maison.abonnement.plateforme }} coûte <span class="price">{{ film.maison.abonnement.montantFr }}</span> (relevé le {{ film.maison.abonnement.dateFr }}, <a href="{{ film.maison.abonnement.sourceUrl }}" target="_blank" rel="noopener noreferrer">{{ film.maison.abonnement.sourceNom }}<span class="sr-only"> (s'ouvre dans un nouvel onglet)</span></a>).</p>{% endif %}
+          <p class="caption">Disponibilité vérifiée le {{ film.maison.verifieLe }} sur <a href="{{ film.maison.sourceUrl }}" target="_blank" rel="noopener noreferrer">{{ film.maison.sourceNom }}<span class="sr-only"> (s'ouvre dans un nouvel onglet)</span></a>. Les catalogues changent : vérifie avant de t'abonner.</p>
+        </section>
+        {% endif %}
+
+        {% if film.noteHtml %}<div class="prose">{{ film.noteHtml | safe }}</div>{% endif %}
+      </div>
+    </div>
+  </div>
+</article>
+
+<script type="application/json" id="cartes-data">{{ { cartes: contenu.cartes } | jsonSur | safe }}</script>
+
+{% if autresFilms.length %}
+{{ c.wave("sunk", 1) }}
+<section class="section section--sunk" aria-labelledby="autres-titre">
+  <div class="wrap">
+    <h2 id="autres-titre">Les autres films de la semaine</h2>
+    <div class="cards">
+      {% for f in autresFilms %}{{ c.verdictCard(f, loop.index0 % 3 + 1) }}{% endfor %}
+    </div>
+    <p class="section__cta"><a class="btn btn--primary" href="{{ '/swipe/' | url }}">Trier la semaine en swipant</a></p>
+  </div>
+</section>
+{% endif %}

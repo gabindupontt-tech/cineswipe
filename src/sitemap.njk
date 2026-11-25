@@ -1,0 +1,30 @@
+---
+permalink: /sitemap.xml
+eleventyExcludeFromCollections: true
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+{%- if contenu.courante and not contenu.courante.exemple %}
+  <url><loc>{{ '/' | abs }}</loc><lastmod>{{ contenu.courante.date }}</lastmod></url>
+  <url><loc>{{ '/swipe/' | abs }}</loc><lastmod>{{ contenu.courante.date }}</lastmod></url>
+{%- endif %}
+{%- if not (contenu.archives | selectattr('exemple') | list).length and contenu.archives.length %}
+  <url><loc>{{ '/archives/' | abs }}</loc></url>
+{%- endif %}
+  <url><loc>{{ '/a-propos/' | abs }}</loc></url>
+{%- if contenu.prixMoyens.length and not contenu.aDesExemples %}
+  <url><loc>{{ '/tarifs/' | abs }}</loc></url>
+{%- endif %}
+{%- if contenu.cartes.length and contenu.referenceCartes %}
+  <url><loc>{{ '/cartes/' | abs }}</loc></url>
+{%- endif %}
+{%- for s in contenu.archives %}{% if not s.exemple %}
+  <url><loc>{{ s.url | abs }}</loc><lastmod>{{ s.date }}</lastmod></url>
+{%- endif %}{% endfor %}
+{%- for a in contenu.articles %}{% if not a.enRelecture %}
+  <url><loc>{{ a.url | abs }}</loc><lastmod>{{ a.date }}</lastmod></url>
+{%- endif %}{% endfor %}
+{%- for f in contenu.films %}{% if not f.exemple %}
+  <url><loc>{{ f.url | abs }}</loc><lastmod>{{ f.tarif.date }}</lastmod></url>
+{%- endif %}{% endfor %}
+</urlset>

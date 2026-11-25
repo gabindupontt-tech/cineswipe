@@ -1,0 +1,72 @@
+---
+layout: base.njk
+kind: groupes
+noindexForce: true
+permalink: /groupes/
+pageScripts:
+  - /assets/js/geo.js
+  - /assets/js/groupes.js
+title: "Groupe : choisissez les films ensemble | CinéSwipe"
+description: "Crée un groupe d'amis, comparez vos tris de la semaine, voyez qui veut voir quoi et où aller ensemble. Sans compte."
+---
+{% set sem = contenu.courante %}
+<section class="section groupes" aria-labelledby="groupes-titre">
+  <div class="wrap wrap--narrow">
+    <h1 id="groupes-titre">Choisissez les films ensemble</h1>
+    {% if not sem %}
+      <p>Il n'y a pas encore de sélection à comparer. Reviens dès la première publication.</p>
+    {% else %}
+    <p class="section__intro">{{ sem.label }}. Chacun trie la semaine dans le <a href="{{ '/swipe/' | url }}">swipe</a>, puis envoie son lien aux autres. Quand vous ouvrez les liens des uns des autres, vous voyez qui garde quoi, des statistiques du groupe et les cinémas où aller ensemble.</p>
+
+    <div class="groupes-app" id="groupes-app" data-semaine="{{ sem.id }}" data-swipe="{{ '/swipe/' | url }}">
+      <p class="g-msg" id="g-msg" role="status" aria-live="polite"></p>
+
+      <section id="g-profil" aria-labelledby="g-profil-t" hidden>
+        <h2 id="g-profil-t">Ton prénom dans le groupe</h2>
+        <p class="caption" id="g-profil-note">Un prénom ou un pseudo suffit, pas ton nom complet : il apparaît dans les liens que tu envoies.</p>
+        <form class="g-form" id="g-profil-form">
+          <label class="lieu__label" for="g-profil-nom">Prénom ou pseudo</label>
+          <input class="lieu__champ" id="g-profil-nom" type="text" maxlength="20" autocomplete="given-name" required>
+          <button class="btn btn--primary" type="submit">Valider</button>
+        </form>
+      </section>
+
+      <div id="g-principal" hidden>
+        <p class="g-salut"><span id="g-salut"></span> <button class="btn btn--ghost btn--small" type="button" id="g-profil-edit">Changer de prénom</button></p>
+
+        <nav id="g-liste-nav" aria-label="Tes groupes" hidden>
+          <ul class="g-onglets" id="g-onglets"></ul>
+        </nav>
+
+        <section id="g-vue" aria-live="off" hidden></section>
+
+        <section id="g-nouveau" aria-labelledby="g-nouveau-t">
+          <h2 id="g-nouveau-t">Créer un groupe</h2>
+          <form class="g-form" id="g-creer-form">
+            <label class="lieu__label" for="g-creer-nom">Nom du groupe</label>
+            <input class="lieu__champ" id="g-creer-nom" type="text" maxlength="30" placeholder="ex. La coloc, Les potes de promo" required>
+            {% if site.stats.endpoint %}<label class="g-sync" id="g-sync-label"><input type="checkbox" id="g-sync" checked> <span>Mise à jour en direct : tes amis rejoignent avec un lien court et vous voyez les choix de chacun sans vous renvoyer de lien. Le nom du groupe, les prénoms et les choix sont alors gardés 14 jours sur notre serveur.</span></label>{% endif %}
+            <button class="btn btn--primary" type="submit">Créer le groupe</button>
+          </form>
+
+          {% if site.stats.demo and not site.stats.endpoint %}<p class="g-demo"><button class="btn btn--ghost btn--small" type="button" id="g-demo">Voir un groupe de démonstration</button> <span class="caption">Trois amis fictifs, pour montrer à quoi ressemble un groupe actif. Rien n'est envoyé.</span></p>{% endif %}
+
+          <h2 id="g-rejoindre-t">Rejoindre avec un lien</h2>
+          <p class="caption">Quand un ami t'envoie son lien, ouvre-le : tu rejoins directement. Si ton appli a coupé le lien, colle-le ici.</p>
+          <form class="g-form" id="g-rejoindre-form">
+            <label class="lieu__label" for="g-rejoindre-code">Lien ou code reçu</label>
+            <textarea class="lieu__champ g-zone" id="g-rejoindre-code" rows="3" maxlength="3000" required></textarea>
+            <button class="btn btn--secondary" type="submit">Rejoindre</button>
+          </form>
+        </section>
+      </div>
+
+      <noscript><p class="caption">Les groupes demandent JavaScript pour fonctionner : il n'y a pas de serveur, tout se passe dans ton navigateur.</p></noscript>
+    </div>
+
+    <p class="caption g-confid">Aucun compte. Ton groupe reste dans ce navigateur. Quand tu envoies ton lien, il contient le nom du groupe, les prénoms et les films gardés ou écartés, et ceux qui le reçoivent les voient. {% if site.stats.endpoint %}Sans la mise à jour en direct, les mises à jour ne se font pas toutes seules : chacun doit renvoyer son lien pour montrer un nouveau tri.{% else %}Les mises à jour ne sont pas en direct : chacun doit renvoyer son lien pour montrer un nouveau tri.{% endif %} <a href="{{ '/a-propos/#confidentialite' | url }}">Confidentialité</a>.</p>
+
+    <script type="application/json" id="groupes-data">{{ { semaine: { id: sem.id, label: sem.label, hash: sem.deckHash }, films: contenu.swipe, cinemas: contenu.cinemasSwipe } | jsonSur | safe }}</script>
+    {% endif %}
+  </div>
+</section>

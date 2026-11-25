@@ -1,0 +1,26 @@
+---
+layout: base.njk
+kind: archives
+permalink: /archives/
+title: "Archives : les sélections précédentes | CinéSwipe"
+description: "Les sélections hebdomadaires précédentes de CinéSwipe, avec les films retenus et leurs verdicts."
+---
+<section class="section">
+  <div class="wrap wrap--narrow">
+    <h1>Les semaines précédentes</h1>
+    {% if contenu.archives.length %}
+    <ul class="archives">
+      {% for s in contenu.archives %}
+      <li>
+        <a class="week-link" href="{{ s.url | url }}">
+          <span class="week-link__date">{{ s.label }}</span>
+          <span class="week-link__films">{% for f in s.films %}{{ f.titre }}{% if not loop.last %} · {% endif %}{% endfor %}</span>
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p>Pas encore de semaine archivée : la première sélection est celle de <a href="{{ '/' | url }}">l'accueil</a>.</p>
+    {% endif %}
+  </div>
+</section>

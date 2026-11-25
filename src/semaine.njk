@@ -1,0 +1,24 @@
+---
+layout: base.njk
+kind: week
+pagination:
+  data: contenu.archives
+  size: 1
+  alias: semaine
+permalink: "/archives/{{ semaine.id }}/"
+eleventyComputed:
+  title: "Sélection du {{ semaine.dateFr }} | CinéSwipe"
+  description: "Les films retenus par CinéSwipe pour la semaine du {{ semaine.dateFr }} : verdict en trois lignes, tarif relevé et réservation."
+---
+{% import "components.njk" as c %}
+<section class="section section--sunk">
+  <div class="wrap">
+    <p><a class="btn btn--ghost btn--small" href="{{ '/archives/' | url }}"><span aria-hidden="true">←</span> Toutes les semaines</a></p>
+    <h1>La sélection du {{ semaine.dateFr }}</h1>
+    <p class="section__intro">{{ semaine.labelLong }}. Les tarifs ont été relevés à cette période, vérifie-les avant de réserver.</p>
+    {% if semaine.edito %}<div class="prose prose--edito">{{ semaine.edito | safe }}</div>{% endif %}
+    <div class="cards">
+      {% for film in semaine.films %}{{ c.verdictCard(film, loop.index0 % 3 + 1) }}{% endfor %}
+    </div>
+  </div>
+</section>

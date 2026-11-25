@@ -1,0 +1,93 @@
+# ============================================================
+#  CARTES DE RÉDUCTION ET PRIX DE RÉFÉRENCE (page "Mes cartes", prix sur les fiches film)
+#  Règles de l'équipe : jamais de prix sans source, lien et date de consultation.
+#  Deux types de cartes :
+#   - abonnement : une carte illimitée d'un circuit. "circuit" doit être le MÊME mot que le champ "circuit"
+#     des fiches de contenu/cinemas/ (ex. UGC). Le site dit alors "séance incluse" chez ce circuit.
+#   - reduction : un tarif réduit. "tarif_type" doit être identique au "type" du tarif des fiches film (ex. étudiant).
+#  Ajoute une carte seulement quand tu as relevé son prix toi-même, sur la page officielle, un jour précis.
+#  Pistes à relever (pas encore sourcées, donc absentes) : abonnements Pathé Gaumont et CGR, carnets de places,
+#  Pass Culture (conditions et âge à vérifier sur le site officiel).
+# ============================================================
+
+reference:
+  montant: 8.26
+  libelle: "Place au tarif étudiant (21 ans), moyenne relevée dans 911 cinémas"
+  source_nom: "Observatoire de la consommation (ODLC), enquête sur les prix des cinémas"
+  source_url: https://salon-arles-avignon.quechoisirensemble.fr/wp-content/uploads/sites/14/2026/03/1_Rapport_prix_cine.pdf
+  date: 2026-10-26   # jour où l'équipe a ouvert la page
+  note: "Relevé du 13 au 27 septembre 2025. Les prix varient selon le cinéma : c'est une moyenne, pas le prix chez toi."
+  entrees_par_an:
+    valeur: 3.3
+    source_nom: "BoxOffice Pro, d'après le CNC (Le public du cinéma en 2025)"
+    source_url: https://www.boxofficepro.fr/le-public-du-cinema-en-2025-les-occasionnels-et-la-province-gagnent-du-terrain/
+    date: 2026-09-30
+    note: "Entrées par an et par spectateur de 15 à 24 ans en 2025. Une seule source, secondaire."
+
+cartes:
+  - id: ugc-illimite-moins-26
+    nom: "UGC Illimité moins de 26 ans"
+    type: abonnement
+    circuit: "UGC"
+    prix_mensuel: 19.90
+    source_nom: "UGC, tarifs officiels UGC Illimité"
+    source_url: https://www.ugc.fr/TarifsUGCIllimite.html
+    date: 2026-10-26
+
+  - id: tarif-etudiant
+    nom: "Carte étudiante (tarif étudiant)"
+    type: reduction
+    tarif_type: "étudiant"
+
+# Prix moyens relevés par une enquête (page /tarifs/). Une ligne par prix. "sources" = nombre de sources indépendantes.
+# Ces chiffres viennent du rapport de l'ODLC (911 cinémas, 13-27 septembre 2025). Libellés exacts à re-vérifier dans le rapport.
+prix_moyens:
+  - libelle: "Place au plein tarif, moyenne des cinémas relevés"
+    montant: 11.30
+    source_nom: "ODLC, enquête sur les prix des cinémas (911 cinémas)"
+    source_url: https://salon-arles-avignon.quechoisirensemble.fr/wp-content/uploads/sites/14/2026/03/1_Rapport_prix_cine.pdf
+    date: 2026-10-26
+    sources: 1
+    note: "Relevé du 13 au 27 septembre 2025. Moyenne : le prix varie selon le cinéma et la ville."
+  - libelle: "Place au tarif étudiant (21 ans), moyenne"
+    montant: 8.26
+    source_nom: "ODLC, enquête sur les prix des cinémas (911 cinémas)"
+    source_url: https://salon-arles-avignon.quechoisirensemble.fr/wp-content/uploads/sites/14/2026/03/1_Rapport_prix_cine.pdf
+    date: 2026-10-26
+    sources: 1
+    note: "Relevé du 13 au 27 septembre 2025."
+  - libelle: "Place avec un carnet, moyenne"
+    montant: 7.29
+    source_nom: "ODLC, enquête sur les prix des cinémas (911 cinémas)"
+    source_url: https://salon-arles-avignon.quechoisirensemble.fr/wp-content/uploads/sites/14/2026/03/1_Rapport_prix_cine.pdf
+    date: 2026-10-26
+    sources: 1
+    note: "Unité du prix (par place) à vérifier dans le rapport."
+  - libelle: "Place dans les multiplexes, moyenne"
+    montant: 13.09
+    source_nom: "ODLC, enquête sur les prix des cinémas (911 cinémas)"
+    source_url: https://salon-arles-avignon.quechoisirensemble.fr/wp-content/uploads/sites/14/2026/03/1_Rapport_prix_cine.pdf
+    date: 2026-10-26
+    sources: 1
+    note: "Type de tarif (plein tarif ou autre) à vérifier dans le rapport."
+  - libelle: "Place dans les multiplexes Pathé Gaumont, moyenne"
+    montant: 15.03
+    source_nom: "ODLC, enquête sur les prix des cinémas (911 cinémas)"
+    source_url: https://salon-arles-avignon.quechoisirensemble.fr/wp-content/uploads/sites/14/2026/03/1_Rapport_prix_cine.pdf
+    date: 2026-10-26
+    sources: 1
+    note: "Type de tarif à vérifier dans le rapport."
+  - libelle: "Place dans les multiplexes UGC, moyenne"
+    montant: 14.43
+    source_nom: "ODLC, enquête sur les prix des cinémas (911 cinémas)"
+    source_url: https://salon-arles-avignon.quechoisirensemble.fr/wp-content/uploads/sites/14/2026/03/1_Rapport_prix_cine.pdf
+    date: 2026-10-26
+    sources: 1
+    note: "Type de tarif à vérifier dans le rapport."
+  - libelle: "Place dans les multiplexes CGR, moyenne"
+    montant: 11.11
+    source_nom: "ODLC, enquête sur les prix des cinémas (911 cinémas)"
+    source_url: https://salon-arles-avignon.quechoisirensemble.fr/wp-content/uploads/sites/14/2026/03/1_Rapport_prix_cine.pdf
+    date: 2026-10-26
+    sources: 1
+    note: "Type de tarif à vérifier dans le rapport."

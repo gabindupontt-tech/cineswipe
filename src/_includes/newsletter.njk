@@ -1,0 +1,14 @@
+<section class="section {% if nlFond != 'base' %}section--sunk {% endif %}newsletter" id="newsletter" aria-labelledby="newsletter-titre">
+  <div class="wrap wrap--narrow">
+    <h2 id="newsletter-titre">La sélection de la semaine, en 30 secondes</h2>
+    <p>Chaque édition sort aussi sur nos pages Instagram et TikTok : les films qui valent le prix, le tarif étudiant et où réserver. Pas d'adresse e-mail à donner.</p>
+    <p class="newsletter__row">
+      {% if site.newsletter.lien %}
+      <a class="btn btn--primary" href="{{ site.newsletter.lien }}" target="_blank" rel="noopener noreferrer" data-track="newsletter_click" data-position="{{ page.fileSlug or 'accueil' }}">Recevoir la newsletter<span class="sr-only"> (s'ouvre dans un nouvel onglet)</span></a>
+      {% else %}
+      <span class="btn btn--primary" aria-disabled="true">Bientôt disponible</span>
+      {% endif %}
+    </p>
+    {% if site.newsletter.lien_simule %}<p class="caption">Démonstration : ce lien est un exemple, la page vers laquelle il mène est simulée.</p>{% endif %}
+  </div>
+</section>
