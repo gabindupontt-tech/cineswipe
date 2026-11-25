@@ -39,9 +39,9 @@ newsletter:
   # SIMULATION : tant que le vrai lien n'existe pas, le bouton pointe vers une adresse réservée aux exemples (example.com).
   lien: "https://example.com/cineswipe-newsletter"
   lien_simule: true
-  # SIMULATION : pas encore de vrais comptes, les deux liens pointent vers l'artefact des maquettes Instagram et TikTok.
-  instagram: "https://claude.ai/artifact/JfEoy8NkVAPHmWEx4PZde7"
-  tiktok: "https://claude.ai/artifact/JfEoy8NkVAPHmWEx4PZde7"
+  # SIMULATION : pas encore de vrais comptes, les deux liens pointent vers le CinéSwipe Social Lab (profils Instagram et TikTok simulés).
+  instagram: "https://claude.ai/artifact/HLjAE9iuwatjQsTmvnd4or"
+  tiktok: "https://claude.ai/artifact/HLjAE9iuwatjQsTmvnd4or"
 
 # ------------------------------------------------------------
 # Page À propos et mentions légales
