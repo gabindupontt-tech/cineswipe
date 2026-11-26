@@ -1,0 +1,42 @@
+{
+  "$schema": "https://playground.wordpress.net/blueprint-schema.json",
+  "meta": {
+    "title": "CinéSwipe (démo WordPress)",
+    "description": "Thème CinéSwipe avec le contenu de départ, exécuté dans le navigateur via WordPress Playground.",
+    "author": "gabindupontt-tech"
+  },
+  "preferredVersions": {
+    "php": "8.3",
+    "wp": "latest"
+  },
+  "landingPage": "/",
+  "login": true,
+  "steps": [
+    {
+      "step": "setSiteLanguage",
+      "language": "fr_FR"
+    },
+    {
+      "step": "setSiteOptions",
+      "options": {
+        "blogname": "CinéSwipe",
+        "blogdescription": "Les films qui valent le prix, et comment les réserver.",
+        "timezone_string": "Europe/Paris"
+      }
+    },
+    {
+      "step": "installTheme",
+      "themeData": {
+        "resource": "url",
+        "url": "https://raw.githubusercontent.com/gabindupontt-tech/cineswipe/main/wordpress/cineswipe-theme.zip"
+      },
+      "options": {
+        "activate": true
+      }
+    },
+    {
+      "step": "runPHP",
+      "code": "<?php require '/wordpress/wp-load.php'; update_option('permalink_structure', '/%postname%/'); $r = cs_seed_run(); $s = get_option('cs_settings', []); $s = array_merge(is_array($s) ? $s : [], ['newsletter_instagram' => 'https://claude.ai/artifact/HLjAE9iuwatjQsTmvnd4or', 'newsletter_tiktok' => 'https://claude.ai/artifact/HLjAE9iuwatjQsTmvnd4or', 'directeur_publication' => 'Gabin Dupont', 'contact_email' => 'cineswipe@example.com', 'hebergeur_nom' => 'Démonstration WordPress Playground (playground.wordpress.net), exécutée dans le navigateur du visiteur', 'hebergeur_adresse' => 'Sans objet : le site est construit dans le navigateur de chaque visiteur']); update_option('cs_settings', $s); flush_rewrite_rules(); echo json_encode($r);"
+    }
+  ]
+}

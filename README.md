@@ -157,3 +157,13 @@ La page rassemble les prix moyens de `contenu/cartes.yml` (bloc `prix_moyens`), 
 cinéma par cinéma, construit automatiquement à partir des tarifs saisis dans les fiches film (le plus récent par cinéma et par type).
 Chaque relevé affiche son ancienneté. Au-delà de `fraicheur_jours` (reglages.yml, 14 par défaut, (H)), la fiche et la page affichent
 « à revérifier » et la construction du site le signale. Le site se reconstruit chaque jour : l'ancienneté se met à jour toute seule.
+
+## Version WordPress (démo)
+
+Le dossier `wordpress/` contient le thème WordPress CinéSwipe (`cineswipe-theme.zip`) et `blueprint.json`, qui installe
+WordPress, le thème, le contenu de départ et les réglages. Démo publique, gratuite et sans hébergeur :
+
+https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/gabindupontt-tech/cineswipe/main/wordpress/blueprint.json
+
+Le site est construit dans le navigateur de chaque visiteur (quelques secondes au premier chargement). Ce qu'on y modifie
+n'est pas enregistré et la démo n'est pas référencée par les moteurs de recherche.
